@@ -41,7 +41,7 @@ phpbin/magento setup:static-content:deploy
 
 ## Configuration ##
 
-Add the SQS queue configuration to the env.php in order to connet to ztr
+Add the SQS queue configuration to the env.php in order to connet to Amazon SQS.
 ```
     'queue' => [
         'sqs' => [
