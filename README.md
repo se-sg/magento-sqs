@@ -36,9 +36,32 @@ To install this package manually you need access to your server file system and 
 cd <your magento path>
 php bin/magento setup:upgrade
 php bin/magento cache:clean
-php bin/magento setup:static-content:deploy
+phpbin/magento setup:static-content:deploy
 ```
- 
+
+## Configuration ##
+
+Add the SQS queue configuration to the env.php in order to connet to ztr
+```
+    'queue' => [
+        'sqs' => [
+            'region' => 'eu-west-1',
+            'prefix' => 'development',
+            'version' => 'latest',
+            'access_key' => 'access_key',
+            'secret_key' => 'secret_key',
+            'endpoint' => 'http://localstack:4576/'
+        ]
+    ]
+```
+
+* region: The name of the region in Amazon to use.
+* prefix: A variable to will be prefixed to the name of the queue. 
+* version: The version to use.
+* access_key: Your AWS access key.
+* secret_key: Your AWD secret key.
+* endpoint: Overwrite the region, you can specify a specific endpoint to use, i.e. for the user of SQS on Localstack.
+
 # Usage #
  
 ## Publisher ##
