@@ -60,7 +60,7 @@ Add the SQS queue configuration to the env.php in order to connet to Amazon SQS.
 * version: The version to use.
 * access_key: Your AWS access key.
 * secret_key: Your AWD secret key.
-* endpoint: Overwrite the region, you can specify a specific endpoint to use, i.e. for the user of SQS on Localstack.
+* endpoint: Overwrite the region, you can specify a specific endpoint to use, i.e. for the use of SQS on Localstack.
 
 # Usage #
  
