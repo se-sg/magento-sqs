@@ -1,4 +1,4 @@
-# Magento SQS MessageQ
+# Magento SQS MessageQueue
 
 With this module you are able to connect to Amazon SQS from Magento to publish and consume messages. Use it like other queues in Magento 2 
 
