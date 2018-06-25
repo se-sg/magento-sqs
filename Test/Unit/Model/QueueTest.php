@@ -9,6 +9,11 @@ namespace Belvg\Sqs\Test\Unit\Model;
 use Belvg\Sqs\Model\Config;
 use Belvg\Sqs\Model\Queue;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Magento\Framework\MessageQueue\Envelope;
+use Enqueue\Sqs\SqsContext;
+use Enqueue\Sqs\SqsConsumer;
+use Enqueue\Sqs\SqsDestination;
+use Enqueue\Sqs\SqsMessage;
 
 class QueueTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,22 +23,22 @@ class QueueTest extends \PHPUnit\Framework\TestCase
     private $topology;
 
     /**
-     * @var \Enqueue\Sqs\SqsContext
+     * @var SqsContext
      */
     private $context;
 
     /**
-     * @var \Enqueue\Sqs\SqsDestination
+     * @var SqsDestination
      */
     private $consumer;
 
     /**
-     * @var \Enqueue\Sqs\SqsDestination
+     * @var SqsDestination
      */
     private $destination;
 
     /**
-     * @var \Enqueue\Sqs\SqsMessage
+     * @var SqsMessage
      */
     private $message;
 
@@ -48,27 +53,27 @@ class QueueTest extends \PHPUnit\Framework\TestCase
     {
         $this->objectManager = new ObjectManager($this);
 
-        $this->context = $this->getMockBuilder(\Enqueue\Sqs\SqsContext::class)
+        $this->context = $this->getMockBuilder(SqsContext::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->consumer = $this->getMockBuilder(\Enqueue\Sqs\SqsConsumer::class)
+        $this->consumer = $this->getMockBuilder(SqsConsumer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->destination = $this->getMockBuilder(\Enqueue\Sqs\SqsDestination::class)
+        $this->destination = $this->getMockBuilder(SqsDestination::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->sqsConfig = $this->getMockBuilder(\Belvg\Sqs\Model\Config::class)
+        $this->sqsConfig = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->envelope = $this->getMockBuilder(\Magento\Framework\MessageQueue\Envelope::class)
+        $this->envelope = $this->getMockBuilder(Envelope::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->message = $this->getMockBuilder(\Enqueue\Sqs\SqsMessage::class)
+        $this->message = $this->getMockBuilder(SqsMessage::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -83,7 +88,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
 
     public function testAcknowledge()
     {
-        $this->sqsConfig->expects($this->exactly(3))
+        $this->sqsConfig->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->context));
 
@@ -122,6 +127,6 @@ class QueueTest extends \PHPUnit\Framework\TestCase
             ->method('createConsumer')
             ->will($this->returnValue($this->consumer));
 
-        $this->assertEquals($this->queue->dequeue(), null);
+        $this->queue->dequeue();
     }
 }

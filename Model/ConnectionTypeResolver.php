@@ -46,6 +46,6 @@ class ConnectionTypeResolver implements ConnectionTypeResolverInterface
      */
     public function getConnectionType($connectionName)
     {
-        return in_array($connectionName, $this->sqsConnectionName) ? 'sqs' : null;
+        return isset($this->sqsConnectionName[$connectionName]) ? 'sqs' : null;
     }
 }

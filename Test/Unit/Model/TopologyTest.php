@@ -9,6 +9,8 @@ namespace Belvg\Sqs\Test\Unit\Model;
 use Belvg\Sqs\Model\Config;
 use Belvg\Sqs\Model\Topology;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Enqueue\Sqs\SqsContext;
+use Enqueue\Sqs\SqsDestination;
 
 class TopologyTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,12 +20,12 @@ class TopologyTest extends \PHPUnit\Framework\TestCase
     private $topology;
 
     /**
-     * @var \Enqueue\Sqs\SqsContext
+     * @var SqsContext
      */
     private $context;
 
     /**
-     * @var \Enqueue\Sqs\SqsDestination
+     * @var SqsDestination
      */
     private $destination;
 
@@ -38,15 +40,15 @@ class TopologyTest extends \PHPUnit\Framework\TestCase
     {
         $this->objectManager = new ObjectManager($this);
 
-        $this->context = $this->getMockBuilder(\Enqueue\Sqs\SqsContext::class)
+        $this->context = $this->getMockBuilder(SqsContext::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->destination = $this->getMockBuilder(\Enqueue\Sqs\SqsDestination::class)
+        $this->destination = $this->getMockBuilder(SqsDestination::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->sqsConfig = $this->getMockBuilder(\Belvg\Sqs\Model\Config::class)
+        $this->sqsConfig = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
             ->getMock();
 

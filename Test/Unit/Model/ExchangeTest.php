@@ -7,37 +7,14 @@
 namespace Belvg\Sqs\Test\Unit\Model;
 
 use Belvg\Sqs\Model\Config;
+use Belvg\Sqs\Model\Exchange;
 use Belvg\Sqs\Model\Queue;
 use Belvg\Sqs\Model\QueueFactory;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use Magento\Framework\MessageQueue\Envelope;
 
 class ExchangeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Queue
-     */
-    private $topology;
-
-    /**
-     * @var \Enqueue\Sqs\SqsContext
-     */
-    private $context;
-
-    /**
-     * @var \Enqueue\Sqs\SqsDestination
-     */
-    private $consumer;
-
-    /**
-     * @var \Enqueue\Sqs\SqsDestination
-     */
-    private $destination;
-
-    /**
-     * @var \Enqueue\Sqs\SqsMessage
-     */
-    private $message;
-
     /**
      * @var QueueFactory
      */
@@ -54,6 +31,16 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
     private $sqsConfig;
 
     /**
+     * @var Envelope
+     */
+    private $envelope;
+
+    /**
+     * @var Exchange
+     */
+    private $exchange;
+
+    /**
      * @var string
      */
     const TOPIC_NAME = 'testtopic';
@@ -62,15 +49,15 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
     {
         $this->objectManager = new ObjectManager($this);
 
-        $this->queueFactory = $this->getMockBuilder(\Belvg\Sqs\Model\QueueFactory::class)
+        $this->queueFactory = $this->getMockBuilder(QueueFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->queue = $this->getMockBuilder(\Belvg\Sqs\Model\Queue::class)
+        $this->queue = $this->getMockBuilder(Queue::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->envelope = $this->getMockBuilder(\Magento\Framework\MessageQueue\Envelope::class)
+        $this->envelope = $this->getMockBuilder(Envelope::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -93,6 +80,6 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
             ->method('push')
             ->with($this->envelope);
 
-        $this->assertEquals($this->exchange->enqueue(self::TOPIC_NAME, $this->envelope), null);
+        $this->exchange->enqueue(self::TOPIC_NAME, $this->envelope);
     }
 }
