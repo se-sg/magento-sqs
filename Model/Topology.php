@@ -276,6 +276,8 @@ class Topology
      */
     protected function getQueueName($queueName)
     {
-        return $this->sqsConfig->getValue(Config::PREFIX) . '_' . Data::prepareQueueName($queueName);
+        return $this->sqsConfig->getValue(Config::PREFIX) ?
+            $this->sqsConfig->getValue(Config::PREFIX). '_' . Data::prepareQueueName($this->queueName) :
+            Data::prepareQueueName($this->queueName);
     }
 }

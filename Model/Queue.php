@@ -81,7 +81,12 @@ class Queue implements QueueInterface
          * @var \Enqueue\Sqs\SqsMessage $message
          */
         $message = $this->createConsumer()->receive(self::TIMEOUT_PROCESS);
-        return $message ? $this->createEnvelop($message) : null;
+        if (null !== $message) {
+            $envelope = $this->createEnvelop($message);
+            return $envelope;
+        }
+        return null;
+
     }
 
     /**
@@ -108,7 +113,9 @@ class Queue implements QueueInterface
      */
     protected function getQueueName()
     {
-        return $this->sqsConfig->getValue(Config::PREFIX) . '_' . Data::prepareQueueName($this->queueName);
+        return $this->sqsConfig->getValue(Config::PREFIX) ?
+            $this->sqsConfig->getValue(Config::PREFIX). '_' . Data::prepareQueueName($this->queueName) :
+            Data::prepareQueueName($this->queueName);
     }
 
     protected function createEnvelop(PsrMessage $message)
