@@ -77,7 +77,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $expectedRegion = 'test';
         $expectedVersion = 'latest';
         $expectedAccessKey = '123456';
-        $expectedSecretKey = '123456';
+        $expectedSecretKey = '654321';
         $expectedPrefix = 'prefix';
         $expectedEndpoint = 'https://localstack:4567';
 
