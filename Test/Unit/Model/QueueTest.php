@@ -94,7 +94,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
 
         $this->context->expects($this->once())
             ->method('createQueue')
-            ->with("_". self::QUEUE_NAME)
+            ->with(self::QUEUE_NAME)
             ->will($this->returnValue($this->destination));
 
         $this->context->expects($this->once())
@@ -120,7 +120,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
 
         $this->context->expects($this->once())
             ->method('createQueue')
-            ->with("_". self::QUEUE_NAME)
+            ->with(self::QUEUE_NAME)
             ->will($this->returnValue($this->destination));
 
         $this->context->expects($this->once())
