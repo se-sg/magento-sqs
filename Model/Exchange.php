@@ -7,12 +7,12 @@
 
 namespace Belvg\Sqs\Model;
 
+use Magento\Framework\MessageQueue\Topology\Config\ExchangeConfigItem\BindingInterface;
 use Magento\Framework\MessageQueue\Topology\ConfigInterface as TopologyConfig;
 use Magento\Framework\MessageQueue\EnvelopeInterface;
 use Magento\Framework\MessageQueue\ExchangeInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
-
 
 class Exchange implements ExchangeInterface
 {
@@ -65,10 +65,7 @@ class Exchange implements ExchangeInterface
         }
 
         foreach ($exchange->getBindings() as $binding) {
-            if ($binding->getTopic() == $topic &&
-                $binding->getDestinationType() == self::DESTINATION_TYPE &&
-                !$binding->isDisabled()
-            ) {
+            if ($this->isValidBinding($topic, $binding)) {
                 $queue = $this->createQueue($binding->getDestination());
                 $queue->push($envelope);
             }
@@ -88,5 +85,17 @@ class Exchange implements ExchangeInterface
         }
 
         return $this->queues[$queueName];
+    }
+
+    /**
+     * @param $topic
+     * @param BindingInterface $binding
+     * @return bool
+     */
+    private function isValidBinding($topic, BindingInterface $binding)
+    {
+        return $binding->getTopic() == $topic &&
+            $binding->getDestinationType() == self::DESTINATION_TYPE &&
+            !$binding->isDisabled();
     }
 }
