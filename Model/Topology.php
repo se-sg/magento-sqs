@@ -31,7 +31,7 @@ class Topology
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var Config
@@ -195,6 +195,7 @@ class Topology
                 $queues[] = $consumer[QueueConfig::CONSUMER_QUEUE];
             }
         }
+
         foreach (array_keys($this->communicationConfig->getTopics()) as $topicName) {
             if ($this->queueConfig->getConnectionByTopic($topicName) === $connection) {
                 $queues = array_merge($queues, $this->queueConfig->getQueuesByTopic($topicName));
@@ -259,7 +260,6 @@ class Topology
         $this->getConnection()->purge($sqsQueueName);
     }
 
-
     /**
      * Return SQS connection
      *
@@ -276,6 +276,8 @@ class Topology
      */
     protected function getQueueName($queueName)
     {
-        return $this->sqsConfig->getValue(Config::PREFIX) . '_' . Data::prepareQueueName($queueName);
+        return $this->sqsConfig->getValue(Config::PREFIX) ?
+            $this->sqsConfig->getValue(Config::PREFIX). '_' . Data::prepareQueueName($queueName) :
+            Data::prepareQueueName($queueName);
     }
 }
