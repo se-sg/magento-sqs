@@ -31,7 +31,7 @@ class Topology
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var Config
