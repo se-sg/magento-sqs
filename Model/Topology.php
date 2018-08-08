@@ -10,7 +10,7 @@ namespace Belvg\Sqs\Model;
 use Belvg\Sqs\Helper\Data;
 use Magento\Framework\Communication\ConfigInterface as CommunicationConfig;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\MessageQueue\ConfigInterface as QueueConfig;
+use Magento\Framework\MessageQueue\ConfigInterface\Proxy as QueueConfig;
 
 /**
  * Class Topology creates topology for Amqp messaging
