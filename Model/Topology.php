@@ -9,6 +9,7 @@ namespace Belvg\Sqs\Model;
 
 use Magento\Framework\Communication\ConfigInterface\Proxy as CommunicationConfig;
 use Magento\Framework\MessageQueue\ConfigInterface\Proxy as QueueConfig;
+use Magento\Framework\MessageQueue\Topology\ConfigInterface\Proxy as TopologyConfig;
 use Magento\Framework\Exception\LocalizedException;
 use Belvg\Sqs\Helper\Data;
 
@@ -49,22 +50,30 @@ class Topology
     private $communicationConfig;
 
     /**
+     * @var TopologyConfig
+     */
+    private $topologyConfig;
+
+    /**
      * Topology constructor.
      * @param Config $sqsConfig
      * @param QueueConfig $queueConfig
      * @param CommunicationConfig $communicationConfig
+     * @param TopologyConfig $topologyConfig
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Config $sqsConfig,
         QueueConfig $queueConfig,
         CommunicationConfig $communicationConfig,
+        TopologyConfig $topologyConfig,
         \Psr\Log\LoggerInterface $logger
     )
     {
         $this->sqsConfig = $sqsConfig;
         $this->queueConfig = $queueConfig;
         $this->communicationConfig = $communicationConfig;
+        $this->topologyConfig = $topologyConfig;
         $this->logger = $logger;
     }
 
@@ -110,6 +119,29 @@ class Topology
             $availableQueues = $this->getQueuesList(self::SQS_CONNECTION);
         }
 
+        foreach ($availableQueues as $queue) {
+            try {
+                $this->declareQueue($queue);
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    sprintf(
+                        'There is a problem with creating queue "%s". Error: %s',
+                        $queue,
+                        $e->getMessage()
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Create all SQS Queues
+     *
+     * @return void
+     */
+    public function createAll()
+    {
+        $availableQueues = $this->getQueuesListFromTopology(self::SQS_CONNECTION);
         foreach ($availableQueues as $queue) {
             try {
                 $this->declareQueue($queue);
@@ -201,6 +233,25 @@ class Topology
                 $queues = array_merge($queues, $this->queueConfig->getQueuesByTopic($topicName));
             }
         }
+        $queues = array_unique($queues);
+        return $queues;
+    }
+
+    /**
+     * Return list of queue names, that are available for connection
+     *
+     * @param string $connection
+     * @return array List of queue names
+     */
+    private function getQueuesListFromTopology($connection)
+    {
+        $queues = [];
+        foreach ($this->topologyConfig->getQueues() as $topologyConfigItem) {
+            if ($topologyConfigItem->getConnection() === $connection) {
+                $queues[] = $topologyConfigItem->getName();
+            }
+        }
+
         $queues = array_unique($queues);
         return $queues;
     }
