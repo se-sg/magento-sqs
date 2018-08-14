@@ -24,6 +24,7 @@ class ConfigOptionsList implements ConfigOptionsListInterface
     const INPUT_KEY_QUEUE_SQS_VERSION = 'sqs-version';
     const INPUT_KEY_QUEUE_SQS_ACCESS_KEY = 'sqs-access-key';
     const INPUT_KEY_QUEUE_SQS_SECRET_KEY = 'sqs-secret-key';
+    const INPUT_KEY_QUEUE_SQS_PREFIX = 'sqs-prefix';
 
     /**
      * Path to the values in the deployment config
@@ -32,6 +33,7 @@ class ConfigOptionsList implements ConfigOptionsListInterface
     const CONFIG_PATH_QUEUE_SQS_VERSION = 'queue/sqs/version';
     const CONFIG_PATH_QUEUE_SQS_ACCESS_KEY = 'queue/sqs/access_key';
     const CONFIG_PATH_QUEUE_SQS_SECRET_KEY = 'queue/sqs/secret_key';
+    const CONFIG_PATH_QUEUE_SQS_PREFIX = 'queue/sqs/prefix';
 
 
     /**
@@ -41,6 +43,7 @@ class ConfigOptionsList implements ConfigOptionsListInterface
     const DEFAULT_SQS_VERSION = 'latest';
     const DEFAULT_SQS_ACCESS_KEY = '';
     const DEFAULT_SQS_SECRET_KEY = '';
+    const DEFAULT_SQS_PREFIX = '';
 
     /**
      * @var ConnectionValidator
@@ -91,6 +94,13 @@ class ConfigOptionsList implements ConfigOptionsListInterface
                 'SQS secret key',
                 self::DEFAULT_SQS_SECRET_KEY
             ),
+            new TextConfigOption(
+                self::INPUT_KEY_QUEUE_SQS_PREFIX,
+                TextConfigOption::FRONTEND_WIZARD_TEXT,
+                self::CONFIG_PATH_QUEUE_SQS_PREFIX,
+                'SQS prefix',
+                self::DEFAULT_SQS_PREFIX
+            ),
         ];
     }
 
@@ -116,6 +126,10 @@ class ConfigOptionsList implements ConfigOptionsListInterface
 
         if (isset($data[self::INPUT_KEY_QUEUE_SQS_SECRET_KEY])) {
             $configData->set(self::CONFIG_PATH_QUEUE_SQS_SECRET_KEY, $data[self::INPUT_KEY_QUEUE_SQS_SECRET_KEY]);
+        }
+
+        if (isset($data[self::INPUT_KEY_QUEUE_SQS_PREFIX])) {
+            $configData->set(self::CONFIG_PATH_QUEUE_SQS_PREFIX, $data[self::INPUT_KEY_QUEUE_SQS_PREFIX]);
         }
 
         return [$configData];
